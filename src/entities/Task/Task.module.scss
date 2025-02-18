@@ -1,0 +1,14 @@
+.t-body__number {
+  width: 150px;
+}
+
+.t-body__title {
+  width: 300px;
+}
+
+.t-body__desc {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
