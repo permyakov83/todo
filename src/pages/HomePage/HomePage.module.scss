@@ -1,0 +1,24 @@
+.home-page {
+  max-width: 940px;
+  margin: 20px auto;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border-width: 1px;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.header__title {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.header__sub-title {
+  font-size: 1.5rem;
+}

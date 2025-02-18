@@ -1,5 +1,6 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 import styles from './Task.module.scss';
 
@@ -18,7 +19,9 @@ export function Task(props: ITaskProps) {
       <TableCell className={styles['t-body__title']}>{title}</TableCell>
       <TableCell className={styles['t-body__desc']}>{desc}</TableCell>
       <TableCell className={styles['t-body__more']}>
-        <Link to={`/task/${id}`}>подробнее...</Link>
+        <Link to={`/task/${id}`}>
+          <ArrowRight />
+        </Link>
       </TableCell>
     </TableRow>
   );

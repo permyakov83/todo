@@ -1,18 +1,22 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Layout } from '@/pages/Layout/Layout';
-import { HomePage } from '@/pages/HomePage/HomePage';
 import '@/index.css';
+import { HomePage } from '@/pages/HomePage/HomePage';
+import { TaskPage } from '@/pages/TaskPage/TaskPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <HomePage />,
     children: [
       {
         path: '/',
         element: <HomePage />
+      },
+      {
+        path: '/task/:id',
+        element: <TaskPage />
       }
     ]
   }
