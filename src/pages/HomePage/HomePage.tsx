@@ -23,8 +23,11 @@ export function HomePage() {
   if (TasksQuery.data != undefined) tasks = TasksQuery.data;
 
   const newTask = () => {
+    if (tasks.length < 1) {
+      navigate(`/task/1`);
+    }
+    console.log(tasks.length);
     const maxId = Math.max(...tasks.map((item) => Number(item.id)));
-
     navigate(`/task/${maxId + 1}`);
   };
 
