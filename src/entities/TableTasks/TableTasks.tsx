@@ -15,14 +15,17 @@ export interface ITableTasksProps {
 
 export function TableTasks(props: ITableTasksProps) {
   const { tasks } = props;
+
+  if (tasks.length < 1) return <div> Задач пока нет добавьте первую</div>;
+
   return (
     <Table className={styles['table']}>
       <TableHeader className={styles['table__header t-header']}>
-        <TableRow>
+        <TableRow className={styles['table__row']}>
           <TableHead className={styles['t-header__number']}>
             Номер задачи
           </TableHead>
-          <TableHead className={styles['t-header__title']}>Заголовок</TableHead>
+          <TableHead className={styles['t-header__title']}>Тема</TableHead>
           <TableHead className={styles['t-header__desc']}>Описание</TableHead>
         </TableRow>
       </TableHeader>

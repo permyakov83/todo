@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import styles from './Task.module.scss';
 
 export interface ITaskProps {
-  id: number;
+  id: string;
   title: string;
   desc: string;
 }
