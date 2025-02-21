@@ -6,14 +6,12 @@ import { Undo2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { queryClient } from '@/app/api/queryClient';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { ITaskProps } from '@/entities/Task/Task';
 import {
-  editDataLSAsync,
-  addDataLSAsync,
   getDataLS,
-  delDataLSAsync
+  addDataLS,
+  editDataLS,
+  delDataLS
 } from '@/app/api/LocalStorage';
 import { z } from 'zod';
 
@@ -30,51 +28,7 @@ type CreateTask = z.infer<typeof CreateTaskShema>;
 export function TaskPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const TasksQuery = useQuery(
-    {
-      queryFn: () => getDataLS(),
-      queryKey: ['ToDo']
-    },
-    queryClient
-  );
-
-  let tasks: ITaskProps[] = [];
-  if (TasksQuery.data != undefined) tasks = TasksQuery.data;
-  const isId = (element: ITaskProps) => {
-    return element.id === id;
-  };
-  const current = tasks.find(isId);
-
-  const CreateTaskMutation = useMutation(
-    {
-      mutationFn: addDataLSAsync,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['ToDo'] });
-      }
-    },
-    queryClient
-  );
-
-  const EditTaskMutation = useMutation(
-    {
-      mutationFn: editDataLSAsync,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['ToDo'] });
-      }
-    },
-    queryClient
-  );
-
-  const DelTaskMutation = useMutation(
-    {
-      mutationFn: delDataLSAsync,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['ToDo'] });
-      }
-    },
-    queryClient
-  );
+  const tasks: ITaskProps[] = getDataLS();
 
   const {
     register,
@@ -85,23 +39,28 @@ export function TaskPage() {
     resolver: zodResolver(CreateTaskShema)
   });
 
-  if (current) {
-    setValue('title', current.title);
-    setValue('desc', current.desc);
+  const isId = (element: ITaskProps) => {
+    return element.id === id;
+  };
+  const currentTask = tasks.find(isId);
+  if (currentTask) {
+    setValue('title', currentTask.title);
+    setValue('desc', currentTask.desc);
   }
 
   const onSubmit: SubmitHandler<CreateTask> = (data) => {
-    if (current === undefined) {
-      CreateTaskMutation.mutate(data);
+    if (currentTask === undefined) {
+      addDataLS(data);
+      navigate('/');
+    } else {
+      editDataLS(data);
       navigate('/');
     }
-    EditTaskMutation.mutate(data);
-    navigate('/');
   };
 
   const onDelete = () => {
     if (window.confirm('Вы уверены что хотите удалить эту задачу?')) {
-      if (id != undefined) DelTaskMutation.mutate(id);
+      if (id != undefined) delDataLS(id);
       navigate('/');
     }
   };
@@ -110,20 +69,15 @@ export function TaskPage() {
     <form className={styles['task-page']} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={styles['task-page__title']}>Задача номер {id}</h2>
       <div className={styles['task-page__btn-panel']}>
-        <div className={styles['task-page__btn-left']}>
-          <Button
-            variant='outline'
-            size='icon'
-            onClick={() => {
-              navigate('/');
-            }}
-          >
-            <Undo2 />
-          </Button>
-          <Button variant='outline' type='submit'>
-            Сохранить
-          </Button>
-        </div>
+        <Button
+          variant='outline'
+          onClick={() => {
+            navigate('/');
+          }}
+        >
+          <Undo2 />
+          Назад к списку задач
+        </Button>
         <Button variant='destructive' type='button' onClick={onDelete}>
           Удалить
         </Button>
@@ -160,6 +114,9 @@ export function TaskPage() {
           {...register('desc')}
         />
       </div>
+      <Button variant='outline' type='submit'>
+        Сохранить
+      </Button>
     </form>
   );
 }
