@@ -1,4 +1,3 @@
-import { TableCell, TableRow } from '@/components/ui/table';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
@@ -14,15 +13,15 @@ export function Task(props: ITaskProps) {
   const { id, title, desc } = props;
 
   return (
-    <TableRow>
-      <TableCell className={styles['t-body__number']}>{id}</TableCell>
-      <TableCell className={styles['t-body__title']}>{title}</TableCell>
-      <TableCell className={styles['t-body__desc']}>{desc}</TableCell>
-      <TableCell className={styles['t-body__more']}>
+    <div className={styles['task']}>
+      <div className={styles['task__number']}>{id}</div>
+      <div className={styles['task__title']}>{title}</div>
+      <div className={styles['task__desc']}>{desc}</div>
+      <div className={styles['task__more']}>
         <Link to={`/task/${id}`}>
           <ArrowRight />
         </Link>
-      </TableCell>
-    </TableRow>
+      </div>
+    </div>
   );
 }

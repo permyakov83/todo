@@ -1,18 +1,14 @@
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { Undo2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ITaskProps } from '@/entities/Task/Task';
+import { ITask } from '../../app/interfaces/ITask';
 import {
   getDataLS,
   addDataLS,
   editDataLS,
   delDataLS
-} from '@/app/api/LocalStorage';
+} from '../../app/api/LocalStorage';
 import { z } from 'zod';
 
 import styles from './TaskPage.module.scss';
@@ -28,7 +24,7 @@ type CreateTask = z.infer<typeof CreateTaskShema>;
 export function TaskPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const tasks: ITaskProps[] = getDataLS();
+  const tasks: ITask[] = getDataLS();
 
   const {
     register,
@@ -39,11 +35,11 @@ export function TaskPage() {
     resolver: zodResolver(CreateTaskShema)
   });
 
-  const isId = (element: ITaskProps) => {
+  const isId = (element: ITask) => {
     return element.id === id;
   };
   const currentTask = tasks.find(isId);
-  if (currentTask) {
+  if (currentTask && currentTask.title && currentTask.desc) {
     setValue('title', currentTask.title);
     setValue('desc', currentTask.desc);
   }
@@ -69,22 +65,21 @@ export function TaskPage() {
     <form className={styles['task-page']} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={styles['task-page__title']}>Задача номер {id}</h2>
       <div className={styles['task-page__btn-panel']}>
-        <Button
-          variant='outline'
+        <button
           onClick={() => {
             navigate('/');
           }}
         >
           <Undo2 />
           Назад к списку задач
-        </Button>
-        <Button variant='destructive' type='button' onClick={onDelete}>
+        </button>
+        <button type='button' onClick={onDelete}>
           Удалить
-        </Button>
+        </button>
       </div>
       <div>
-        <Label htmlFor='title'>Номер задачи</Label>
-        <Input
+        <label htmlFor='title'>Номер задачи</label>
+        <input
           className={styles['task-id']}
           id='id'
           value={id}
@@ -93,30 +88,28 @@ export function TaskPage() {
         />
       </div>
       <div>
-        <Label htmlFor='title'>Тема</Label>
+        <label htmlFor='title'>Тема</label>
         <p className={styles['error']}>
           {errors.title?.message && errors.title?.message}
         </p>
-        <Input
+        <input
           className={styles['task-title']}
           id='title'
           {...register('title')}
         />
       </div>
       <div>
-        <Label htmlFor='desc'>Описание</Label>
+        <label htmlFor='desc'>Описание</label>
         <p className={styles['error']}>
           {errors.desc?.message && errors.desc?.message}
         </p>
-        <Textarea
+        <textarea
           className={styles['task-desc']}
           id='desc'
           {...register('desc')}
         />
       </div>
-      <Button variant='outline' type='submit'>
-        Сохранить
-      </Button>
+      <button type='submit'>Сохранить</button>
     </form>
   );
 }

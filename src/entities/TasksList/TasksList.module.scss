@@ -1,0 +1,8 @@
+.tasks-list {
+  list-style: none;
+}
+
+.tasks-list__body {
+  max-height: 500px;
+  overflow-y: auto;
+}

@@ -1,0 +1,45 @@
+.task {
+  display: flex;
+  font-size: 1rem;
+  padding: 10px;
+  border-bottom: 1px solid black;
+  &:hover {
+    background-color: rgb(229, 229, 229);
+  }
+}
+
+.task__number {
+  flex-basis: var(--number-col);
+  text-align: center;
+}
+
+.task__title {
+  margin-right: 15px;
+  flex-basis: var(--title-col);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task__desc {
+  margin-right: 15px;
+  flex-basis: var(--desc-col);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task__more {
+  position: relative;
+}
+
+.task__more a {
+  color: black;
+  &:hover {
+    color: rgb(111, 110, 110);
+  }
+}
+
+.isHeader {
+  font-weight: 600;
+}

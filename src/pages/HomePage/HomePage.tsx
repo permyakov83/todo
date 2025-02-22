@@ -1,16 +1,15 @@
-import { Button } from '@/components/ui/button';
 import { CirclePlus } from 'lucide-react';
-import { TableTasks } from '@/entities/TableTasks/TableTasks';
-import { getDataLS } from '@/app/api/LocalStorage';
-import { ITaskProps } from '@/entities/Task/Task';
+import { TasksList } from '../../entities/TasksList/TasksList';
+import { getDataLS } from '../../app/api/LocalStorage';
 import { useNavigate } from 'react-router-dom';
+import { ITask } from '../../app/interfaces/ITask';
+import Button from '../../shared/Button/Button';
 
 import styles from './HomePage.module.scss';
-import { Infiniti } from '@/mocks/test2';
 
 export function HomePage() {
   const navigate = useNavigate();
-  const tasks: ITaskProps[] = getDataLS();
+  const tasks: ITask[] = getDataLS();
 
   const newTask = () => {
     if (tasks.length < 1) {
@@ -35,8 +34,7 @@ export function HomePage() {
         </div>
       </div>
       <div className={styles['container']}>
-        {/* <TableTasks tasks={tasks} /> */}
-        <Infiniti />
+        <TasksList tasks={tasks} />
       </div>
     </div>
   );

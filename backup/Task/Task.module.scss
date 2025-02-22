@@ -1,16 +1,16 @@
-.t-body__number {
-  width: 125px;
+.task__number {
+  width: var(--number-col);
 }
 
-.t-body__title {
-  width: 250px;
+.task__title {
+  width: var(--title-col);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.t-body__desc {
-  max-width: 400px;
+.task__desc {
+  max-width: var(--desc-col);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
