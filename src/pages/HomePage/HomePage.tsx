@@ -6,6 +6,7 @@ import { ITaskProps } from '@/entities/Task/Task';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './HomePage.module.scss';
+import { Infiniti } from '@/mocks/test2';
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -34,7 +35,8 @@ export function HomePage() {
         </div>
       </div>
       <div className={styles['container']}>
-        <TableTasks tasks={tasks} />
+        {/* <TableTasks tasks={tasks} /> */}
+        <Infiniti />
       </div>
     </div>
   );
