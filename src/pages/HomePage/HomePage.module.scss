@@ -2,8 +2,9 @@
   padding: 20px;
   border: 1px solid black;
   border-radius: 0.5rem;
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  -webkit-box-shadow: 1px 1px 5px 3px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 1px 5px 3px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 1px 5px 3px rgba(0, 0, 0, 0.75);
 }
 
 .header {

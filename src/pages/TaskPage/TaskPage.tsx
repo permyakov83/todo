@@ -9,7 +9,9 @@ import {
   editDataLS,
   delDataLS
 } from '../../app/api/LocalStorage';
+import Button from '../../shared/Button/Button';
 import { z } from 'zod';
+import cn from 'classnames';
 
 import styles from './TaskPage.module.scss';
 
@@ -65,51 +67,51 @@ export function TaskPage() {
     <form className={styles['task-page']} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={styles['task-page__title']}>Задача номер {id}</h2>
       <div className={styles['task-page__btn-panel']}>
-        <button
+        <Button
           onClick={() => {
             navigate('/');
           }}
         >
           <Undo2 />
           Назад к списку задач
-        </button>
-        <button type='button' onClick={onDelete}>
+        </Button>
+        <Button variant='delete' type='button' onClick={onDelete}>
           Удалить
-        </button>
+        </Button>
       </div>
-      <div>
+      <div className={styles['wrapper']}>
         <label htmlFor='title'>Номер задачи</label>
         <input
-          className={styles['task-id']}
+          className={cn(styles['input'], styles['task-id'])}
           id='id'
           value={id}
           disabled
           {...register('id')}
         />
       </div>
-      <div>
+      <div className={styles['wrapper']}>
         <label htmlFor='title'>Тема</label>
         <p className={styles['error']}>
           {errors.title?.message && errors.title?.message}
         </p>
         <input
-          className={styles['task-title']}
+          className={cn(styles['input'], styles['task-title'])}
           id='title'
           {...register('title')}
         />
       </div>
-      <div>
+      <div className={styles['wrapper']}>
         <label htmlFor='desc'>Описание</label>
         <p className={styles['error']}>
           {errors.desc?.message && errors.desc?.message}
         </p>
         <textarea
-          className={styles['task-desc']}
+          className={cn(styles['input'], styles['task-desc'])}
           id='desc'
           {...register('desc')}
         />
       </div>
-      <button type='submit'>Сохранить</button>
+      <Button type='submit'>Сохранить</Button>
     </form>
   );
 }

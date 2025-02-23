@@ -1,14 +1,8 @@
-// import {
-//   Root,
-//   ScrollArea,
-//   Scrollbar,
-//   Thumb,
-//   Viewport
-// } from '@radix-ui/react-scroll-area';
+import SimpleBar from 'simplebar-react';
 import { ITask } from '../../app/interfaces/ITask';
 import { Row } from '../../shared/Row/Row';
-import { ScrollArea, ScrollBar } from '../../shared/Scroll/Scroll';
 
+import 'simplebar-react/dist/simplebar.min.css';
 import styles from './TasksList.module.scss';
 
 export interface ITasksListProps {
@@ -23,14 +17,13 @@ export function TasksList(props: ITasksListProps) {
   return (
     <ul className={styles['tasks-list']}>
       <Row />
-      <ScrollArea className={styles['tasks-list__body']}>
+      <SimpleBar forceVisible='y' autoHide={true} style={{ maxHeight: 400 }}>
         {tasks.map((el) => (
           <li className={styles['tasks-item']} key={el.id}>
             <Row id={el.id} title={el.title} desc={el.desc} />
           </li>
         ))}
-        <ScrollBar orientation='vertical' />
-      </ScrollArea>
+      </SimpleBar>
     </ul>
   );
 }
