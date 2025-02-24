@@ -6,6 +6,7 @@ import { ITask } from '../../app/interfaces/ITask';
 import Button from '../../shared/Button/Button';
 
 import styles from './HomePage.module.scss';
+import { Posts } from '../../shared/Posts/Posts';
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -21,21 +22,24 @@ export function HomePage() {
   };
 
   return (
-    <div className={styles['home-page']}>
-      <div className={styles['header']}>
-        <div className={styles['header__left']}>
-          <h1 className={styles['header__title']}>Добро пожаловать!</h1>
-          <p className={styles['header__sub-title']}>Это ваш список задач!</p>
+    <>
+      <div className={styles['home-page']}>
+        <div className={styles['header']}>
+          <div className={styles['header__left']}>
+            <h1 className={styles['header__title']}>Добро пожаловать!</h1>
+            <p className={styles['header__sub-title']}>Это ваш список задач!</p>
+          </div>
+          <div className={styles['header__right']}>
+            <Button onClick={newTask}>
+              <CirclePlus /> <span>Добавить новую задачу</span>
+            </Button>
+          </div>
         </div>
-        <div className={styles['header__right']}>
-          <Button onClick={newTask}>
-            <CirclePlus /> <span>Добавить новую задачу</span>
-          </Button>
+        <div className={styles['container']}>
+          <TasksList tasks={tasks} />
         </div>
       </div>
-      <div className={styles['container']}>
-        <TasksList tasks={tasks} />
-      </div>
-    </div>
+      <Posts />
+    </>
   );
 }
