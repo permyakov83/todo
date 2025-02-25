@@ -9,7 +9,7 @@ import {
   editDataLS,
   delDataLS
 } from '../../app/api/LocalStorage';
-import Button from '../../shared/Button/Button';
+import { Button } from '../../shared/Button/Button';
 import { z } from 'zod';
 import cn from 'classnames';
 

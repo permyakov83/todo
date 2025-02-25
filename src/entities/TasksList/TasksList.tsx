@@ -17,13 +17,13 @@ export function TasksList(props: ITasksListProps) {
   return (
     <ul className={styles['tasks-list']}>
       <Row />
-      <SimpleBar forceVisible='y' autoHide={true} style={{ maxHeight: 400 }}>
-        {tasks.map((el) => (
-          <li className={styles['tasks-item']} key={el.id}>
-            <Row id={el.id} title={el.title} desc={el.desc} />
-          </li>
-        ))}
-      </SimpleBar>
+      {/* <SimpleBar forceVisible='y' autoHide={true} style={{ maxHeight: 400 }}> */}
+      {tasks.map((el) => (
+        <li className={styles['tasks-item']} key={el.id}>
+          <Row id={el.id} title={el.title} desc={el.desc} />
+        </li>
+      ))}
+      {/* </SimpleBar> */}
     </ul>
   );
 }

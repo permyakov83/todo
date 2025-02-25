@@ -1,12 +1,12 @@
-import { ITaskProps } from '@/entities/Task/Task';
+import { ITask } from '../interfaces/ITask';
 
 // Данные в строку Json
-function dataToJson(data: ITaskProps[] | []): string {
+function dataToJson(data: ITask[] | []): string {
   return JSON.stringify(data);
 }
 
 // Данные из строки Json
-function jsonToData(data: string): ITaskProps[] | [] {
+function jsonToData(data: string): ITask[] | [] {
   return JSON.parse(data);
 }
 
@@ -17,7 +17,7 @@ export function getDataLS() {
 }
 
 // Добавление элемента в локальное хранилище
-export function addDataLS(data: ITaskProps) {
+export function addDataLS(data: ITask) {
   const arr = getDataLS();
   arr.push(data);
   const string = dataToJson(arr);
@@ -25,7 +25,7 @@ export function addDataLS(data: ITaskProps) {
 }
 
 // Изменение элемента в локальном хранилище
-export function editDataLS(data: ITaskProps) {
+export function editDataLS(data: ITask) {
   const arr = getDataLS();
   for (const el of arr) {
     if (el.id === data.id) {

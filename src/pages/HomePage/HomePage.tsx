@@ -1,12 +1,11 @@
 import { CirclePlus } from 'lucide-react';
-import { TasksList } from '../../entities/TasksList/TasksList';
 import { getDataLS } from '../../app/api/LocalStorage';
 import { useNavigate } from 'react-router-dom';
 import { ITask } from '../../app/interfaces/ITask';
-import Button from '../../shared/Button/Button';
+import { Button } from '../../shared/Button/Button';
+import { InfinityTasksList } from '../../features/InfinityTasksList/InfinityTasksList';
 
 import styles from './HomePage.module.scss';
-import { Posts } from '../../shared/Posts/Posts';
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -36,10 +35,9 @@ export function HomePage() {
           </div>
         </div>
         <div className={styles['container']}>
-          <TasksList tasks={tasks} />
+          <InfinityTasksList />
         </div>
       </div>
-      <Posts />
     </>
   );
 }
