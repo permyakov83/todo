@@ -1,9 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { getDataLS } from '../../app/api/LocalStorage';
 import { ITask } from '../../app/interfaces/ITask';
 import { Row } from '../../shared/Row/Row';
 import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styles from './InfinityTasksList.module.scss';
 
@@ -46,13 +47,21 @@ export function InfinityTasksList() {
     initialPageParam: 0
   });
 
+  const tasks = data ? data.pages.flatMap((d) => d.tasks) : [];
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const virtualizer = useVirtualizer({
+    count: hasNextPage ? tasks.length + 1 : tasks.length,
+    estimateSize: () => 50,
+    getScrollElement: () => scrollRef.current
+  });
+
   useEffect(() => {
     if (entry && inView) {
       fetchNextPage();
     }
   }, [entry, fetchNextPage, inView]);
-
-  const tasks = data ? data.pages.flatMap((d) => d.tasks) : [];
 
   if (tasks.length < 1) return <div> Задач пока нет добавьте первую</div>;
 
@@ -60,18 +69,24 @@ export function InfinityTasksList() {
     <>
       <ul className={styles['tasks-list']}>
         <Row />
-        {tasks.map((el) => (
-          <li className={styles['tasks-item']} key={el.id}>
-            <Row id={el.id} title={el.title} desc={el.desc} />
-          </li>
-        ))}
+        <div className={styles['virtualizer']} ref={scrollRef}>
+          <div
+            className={styles['virtualizer__wrapper']}
+            style={{ height: `${virtualizer.getTotalSize()}px` }}
+          >
+            {tasks.map((el) => (
+              <li className={styles['tasks-item']} key={el.id}>
+                <Row id={el.id} title={el.title} desc={el.desc} />
+              </li>
+            ))}
+            {isFetchingNextPage ? (
+              <div className={styles['load']}>Загружается...</div>
+            ) : (
+              hasNextPage && <div ref={ref}></div>
+            )}
+          </div>
+        </div>
       </ul>
-
-      {isFetchingNextPage ? (
-        <div className={styles['load']}>Загружается...</div>
-      ) : (
-        hasNextPage && <div ref={ref}></div>
-      )}
     </>
   );
 }
