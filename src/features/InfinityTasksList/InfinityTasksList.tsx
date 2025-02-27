@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getDataLS } from '../../app/api/LocalStorage';
 import { ITask } from '../../app/interfaces/ITask';
-import { TasksList } from '../../entities/TasksList/TasksList';
+import { Row } from '../../shared/Row/Row';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 
@@ -15,6 +15,9 @@ async function fetchLSPage(
   const allTasks = getDataLS();
 
   if (allTasks.length <= limit * offset) {
+    nextOffset = undefined;
+  }
+  if (allTasks.length - limit * offset < limit) {
     nextOffset = undefined;
   } else {
     nextOffset = offset + 1;
@@ -51,9 +54,19 @@ export function InfinityTasksList() {
 
   const tasks = data ? data.pages.flatMap((d) => d.tasks) : [];
 
+  if (tasks.length < 1) return <div> Задач пока нет добавьте первую</div>;
+
   return (
     <>
-      <TasksList tasks={tasks} />
+      <ul className={styles['tasks-list']}>
+        <Row />
+        {tasks.map((el) => (
+          <li className={styles['tasks-item']} key={el.id}>
+            <Row id={el.id} title={el.title} desc={el.desc} />
+          </li>
+        ))}
+      </ul>
+
       {isFetchingNextPage ? (
         <div className={styles['load']}>Загружается...</div>
       ) : (
