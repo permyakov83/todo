@@ -32,20 +32,13 @@ async function fetchLSPage(
 
 export function InfinityTasksList() {
   const { ref, inView, entry } = useInView();
-  const {
-    status,
-    data,
-    error,
-    isFetching,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage
-  } = useInfiniteQuery({
-    queryKey: ['projects'],
-    queryFn: (ctx) => fetchLSPage(10, ctx.pageParam),
-    getNextPageParam: (lastGroup) => lastGroup.nextOffset,
-    initialPageParam: 0
-  });
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ['projects'],
+      queryFn: (ctx) => fetchLSPage(10, ctx.pageParam),
+      getNextPageParam: (lastGroup) => lastGroup.nextOffset,
+      initialPageParam: 0
+    });
 
   const tasks = data ? data.pages.flatMap((d) => d.tasks) : [];
 
@@ -54,8 +47,11 @@ export function InfinityTasksList() {
   const virtualizer = useVirtualizer({
     count: hasNextPage ? tasks.length + 1 : tasks.length,
     estimateSize: () => 50,
-    getScrollElement: () => scrollRef.current
+    getScrollElement: () => scrollRef.current,
+    overscan: 2
   });
+
+  const virtualItems = virtualizer.getVirtualItems();
 
   useEffect(() => {
     if (entry && inView) {
@@ -74,17 +70,37 @@ export function InfinityTasksList() {
             className={styles['virtualizer__wrapper']}
             style={{ height: `${virtualizer.getTotalSize()}px` }}
           >
-            {tasks.map((el) => (
-              <li className={styles['tasks-item']} key={el.id}>
-                <Row id={el.id} title={el.title} desc={el.desc} />
-              </li>
-            ))}
-            {isFetchingNextPage ? (
-              <div className={styles['load']}>Загружается...</div>
-            ) : (
-              hasNextPage && <div ref={ref}></div>
-            )}
+            {virtualItems.map((vItem) => {
+              const isLoaderRow = vItem.index > tasks.length - 1;
+              const task = tasks[vItem.index];
+              return (
+                <li
+                  className={styles['virtualizer__item']}
+                  style={{
+                    transform: `translateY(${vItem.start}px)`,
+                    height: `${vItem.size}px`
+                  }}
+                  key={vItem.key}
+                  data-index={vItem.index}
+                >
+                  {isLoaderRow ? (
+                    hasNextPage ? (
+                      'Загружаются следующие задачи...'
+                    ) : (
+                      'Задач больше нет'
+                    )
+                  ) : (
+                    <Row id={task.id} title={task.title} desc={task.desc} />
+                  )}
+                </li>
+              );
+            })}
           </div>
+          {isFetchingNextPage ? (
+            <div className={styles['load']}></div>
+          ) : (
+            hasNextPage && <div ref={ref}></div>
+          )}
         </div>
       </ul>
     </>
